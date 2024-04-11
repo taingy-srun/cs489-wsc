@@ -16,3 +16,7 @@ WCS has an already existing order application that process the incoming orders. 
 
 ### Class Diagram
 <img src="https://github.com/taingy-srun/cs489-wsc/blob/master/docs/WSC-ClassDiagram.png">
+
+
+### ER Diagram
+<img src="https://github.com/taingy-srun/cs489-wsc/blob/master/docs/WSC-ERD.png">
