@@ -15,4 +15,4 @@ Also, the application can generate reports for management support.
 WCS has an already existing order application that process the incoming orders. The web shop application should use this existing order application to process orders.
 
 ### Class Diagram
-<img width="250" src="https://github.com/taingy-srun/cs489-wsc/blob/wsc/docs/WSC-ClassDiagram.png">
+<img width="250" src="https://github.com/taingy-srun/cs489-wsc/blob/master/docs/WSC-ClassDiagram.png">
