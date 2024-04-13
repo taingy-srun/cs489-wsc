@@ -28,4 +28,19 @@ public class CustomerServiceImpl implements CustomerService {
         return repository.findAll();
     }
 
+    @Override
+    public Customer findById(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(Customer customer) {
+        repository.delete(customer);
+    }
+
+    @Override
+    public List<Customer> findAllByName(String name) {
+        return repository.findAllByFirstnameContainsOrLastnameContains(name, name);
+    }
+
 }
