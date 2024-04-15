@@ -34,6 +34,10 @@ public class Product {
         this.category = new Category(categoryId, null);
     }
 
+    public Product(Integer productId) {
+        this.setProductId(productId);
+    }
+
     public ProductDTO toProductDTO() {
         return new ProductDTO(productId, name, price, description, category.getName());
     }

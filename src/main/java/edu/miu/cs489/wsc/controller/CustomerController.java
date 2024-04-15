@@ -4,7 +4,6 @@ import edu.miu.cs489.wsc.dto.CustomerCreationDTO;
 import edu.miu.cs489.wsc.dto.CustomerDTO;
 import edu.miu.cs489.wsc.dto.CustomerUpdateDTO;
 import edu.miu.cs489.wsc.model.Customer;
-import edu.miu.cs489.wsc.model.ShoppingCart;
 import edu.miu.cs489.wsc.service.CustomerService;
 import edu.miu.cs489.wsc.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,10 +72,5 @@ public class CustomerController {
         return ResponseEntity.ok("Deleted successfully!");
     }
 
-    @GetMapping("/{id}/shopping-carts")
-    public ResponseEntity<List<ShoppingCart>> getCustomerShoppingCart(@PathVariable Integer id) {
-        List<ShoppingCart> shoppingCarts = shoppingCartService.getAllByCustomerId(id);
-        return ResponseEntity.ok(shoppingCarts);
-    }
 
 }

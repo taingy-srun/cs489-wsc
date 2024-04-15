@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,13 +17,18 @@ import java.time.LocalDate;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private Integer orderId;
     private LocalDate date;
     private Double amount;
 
-    @OneToOne
-    @JoinColumn(name = "shopping_cart_id")
-    private ShoppingCart shoppingCart;
+    @OneToMany
+    @JoinTable(
+            name = "order_lines",
+            joinColumns = {@JoinColumn(name = "order_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_line_id")}
+    )
+    private List<OrderLine> orderLines;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

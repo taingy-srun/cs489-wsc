@@ -32,17 +32,33 @@ public class Customer {
 
     @OneToMany
     @JoinTable(
-            name = "customer_shopping_carts",
+            name = "orders",
+            joinColumns = {@JoinColumn(name = "customer_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_id")}
+    )
+    private List<Order> orders;
+
+    @OneToMany
+    @JoinTable(
+            name = "shopping_carts",
             joinColumns = {@JoinColumn(name = "customer_id")},
             inverseJoinColumns = {@JoinColumn(name = "shopping_cart_id")}
     )
-    private List<ShoppingCart> shoppingCarts;
+    private List<ShoppingCart> shoppingCart;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Customer(String firstname, String lastname, String phone, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.phone = phone;
         this.email = email;
+    }
+
+    public Customer(Integer customerId) {
+        this.setCustomerId(customerId);
     }
 
     public CustomerDTO toCustomerDTO() {

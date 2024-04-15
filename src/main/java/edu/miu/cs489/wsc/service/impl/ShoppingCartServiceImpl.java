@@ -1,5 +1,6 @@
 package edu.miu.cs489.wsc.service.impl;
 
+import edu.miu.cs489.wsc.dto.AddToCartDTO;
 import edu.miu.cs489.wsc.model.ShoppingCart;
 import edu.miu.cs489.wsc.repository.ShoppingCartRepository;
 import edu.miu.cs489.wsc.service.ShoppingCartService;
@@ -22,4 +23,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public List<ShoppingCart> getAllByCustomerId(Integer customerId) {
         return repository.findAllByCustomer_CustomerId(customerId);
     }
+
+    @Override
+    public ShoppingCart addToCart(ShoppingCart cart) {
+        return repository.save(cart);
+    }
+
 }
