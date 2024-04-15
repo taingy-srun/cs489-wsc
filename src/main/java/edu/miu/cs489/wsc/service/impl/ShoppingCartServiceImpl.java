@@ -6,6 +6,8 @@ import edu.miu.cs489.wsc.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
@@ -17,7 +19,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCart getByCustomerId(Integer customerId) {
-        return null;
+    public List<ShoppingCart> getAllByCustomerId(Integer customerId) {
+        return repository.findAllByCustomer_CustomerId(customerId);
     }
 }

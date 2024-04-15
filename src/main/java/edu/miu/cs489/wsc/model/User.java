@@ -1,7 +1,14 @@
 package edu.miu.cs489.wsc.model;
 
+import edu.miu.cs489.wsc.dto.UserDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -15,4 +22,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    public UserDTO toUserDTO() {
+        return new UserDTO(userId, username, role);
+    }
 }

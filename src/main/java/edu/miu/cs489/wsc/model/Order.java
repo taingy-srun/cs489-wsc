@@ -1,5 +1,6 @@
 package edu.miu.cs489.wsc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,8 +18,14 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId;
     private LocalDate date;
+    private Double amount;
 
     @OneToOne
     @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    @JsonIgnore
+    private Customer customer;
 }

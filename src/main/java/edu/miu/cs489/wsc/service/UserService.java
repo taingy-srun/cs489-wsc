@@ -5,4 +5,5 @@ import edu.miu.cs489.wsc.model.User;
 public interface UserService {
 
     User login(String username, String password);
+    User create(User user);
 }

@@ -13,8 +13,13 @@ import lombok.NoArgsConstructor;
 public class ProductReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_review_id")
     private Integer productReviewId;
     private String title;
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 }

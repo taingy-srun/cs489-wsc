@@ -1,5 +1,6 @@
 package edu.miu.cs489.wsc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,5 +19,10 @@ public class Payment {
     private Integer paymentId;
     private Double amount;
     private LocalDate date;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    @JsonIgnore
+    private Customer customer;
 
 }

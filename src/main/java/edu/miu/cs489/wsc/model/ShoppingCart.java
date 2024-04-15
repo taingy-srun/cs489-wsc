@@ -1,11 +1,11 @@
 package edu.miu.cs489.wsc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -17,8 +17,17 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer shoppingCartId;
-    private LocalDate addedDate;
+
     @OneToMany
-    @JoinColumn(name = "product_id")
+    @JoinTable(
+            name = "shopping_cart_products",
+            joinColumns = {@JoinColumn(name = "shopping_cart_id")},
+            inverseJoinColumns = {@JoinColumn(name = "product_id")}
+    )
     private List<Product> productList;
+
+    @ManyToOne()
+    @JoinColumn(name = "customer_id")
+    @JsonIgnore
+    private Customer customer;
 }

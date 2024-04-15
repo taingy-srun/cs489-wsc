@@ -1,5 +1,8 @@
 package edu.miu.cs489.wsc.controller;
 
+import edu.miu.cs489.wsc.dto.ProductCreationDTO;
+import edu.miu.cs489.wsc.dto.ProductDTO;
+import edu.miu.cs489.wsc.dto.ProductUpdateDTO;
 import edu.miu.cs489.wsc.model.Product;
 import edu.miu.cs489.wsc.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -19,41 +23,41 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getProducts() {
+    public ResponseEntity<List<ProductDTO>> getProducts() {
         List<Product> products = service.getAll();
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(toProductDTOList(products));
     }
 
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Integer categoryId) {
+    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable Integer categoryId) {
         List<Product> products = service.getAllByCategory(categoryId);
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(toProductDTOList(products));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Integer id) {
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Integer id) {
         Product product = service.getOne(id);
         if (product == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(product.toProductDTO());
     }
 
     @PostMapping
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        Product addedProduct = service.save(product);
-        return ResponseEntity.ok(addedProduct);
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductCreationDTO productCreationDTO) {
+        Product addedProduct = service.save(productCreationDTO.toProduct());
+        return ResponseEntity.ok(addedProduct.toProductDTO());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Integer id, @RequestBody Product product) {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductCreationDTO productCreationDTO) {
         Product findProduct = service.getOne(id);
         if (findProduct == null) {
             return ResponseEntity.notFound().build();
         }
-        product.setProductId(id);
-        Product updatedProduct = service.save(product);
-        return ResponseEntity.ok(updatedProduct);
+        ProductUpdateDTO productUpdateDTO = new ProductUpdateDTO(id, productCreationDTO);
+        Product updatedProduct = service.save(productUpdateDTO.toProduct());
+        return ResponseEntity.ok(updatedProduct.toProductDTO());
     }
 
     @DeleteMapping("/{id}")
@@ -64,5 +68,11 @@ public class ProductController {
         }
         service.delete(findProduct);
         return ResponseEntity.ok("Product deleted successfully!");
+    }
+
+    private List<ProductDTO> toProductDTOList(List<Product> products) {
+        return products.stream()
+                .map(Product::toProductDTO)
+                .collect(Collectors.toList());
     }
 }

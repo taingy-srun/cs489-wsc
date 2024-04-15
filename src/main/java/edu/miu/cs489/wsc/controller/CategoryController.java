@@ -1,5 +1,6 @@
 package edu.miu.cs489.wsc.controller;
 
+import edu.miu.cs489.wsc.dto.CategoryCreationDTO;
 import edu.miu.cs489.wsc.model.Category;
 import edu.miu.cs489.wsc.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
-        Category addedCategory = service.save(category);
+    public ResponseEntity<Category> addCategory(@RequestBody CategoryCreationDTO categoryCreationDTO) {
+        Category addedCategory = service.save(categoryCreationDTO.toCategory());
         return ResponseEntity.ok(addedCategory);
     }
 

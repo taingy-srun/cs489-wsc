@@ -1,7 +1,12 @@
 package edu.miu.cs489.wsc.controller;
 
+import edu.miu.cs489.wsc.dto.CustomerCreationDTO;
+import edu.miu.cs489.wsc.dto.CustomerDTO;
+import edu.miu.cs489.wsc.dto.CustomerUpdateDTO;
 import edu.miu.cs489.wsc.model.Customer;
+import edu.miu.cs489.wsc.model.ShoppingCart;
 import edu.miu.cs489.wsc.service.CustomerService;
+import edu.miu.cs489.wsc.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +18,12 @@ import java.util.List;
 public class CustomerController {
 
     private CustomerService service;
+    private ShoppingCartService shoppingCartService;
 
     @Autowired
-    public CustomerController(CustomerService service) {
+    public CustomerController(CustomerService service, ShoppingCartService shoppingCartService) {
         this.service = service;
+        this.shoppingCartService = shoppingCartService;
     }
 
     @GetMapping
@@ -40,20 +47,20 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
-        Customer addedCustomer = service.save(customer);
-        return ResponseEntity.ok(addedCustomer);
+    public ResponseEntity<CustomerDTO> addCustomer(@RequestBody CustomerCreationDTO customerCreationDTO) {
+        Customer addedCustomer = service.save(customerCreationDTO.toCustomer());
+        return ResponseEntity.ok(addedCustomer.toCustomerDTO());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Integer id, @RequestBody Customer customer) {
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer id, @RequestBody CustomerCreationDTO customerCreationDTO) {
         Customer findCustomer = service.findById(id);
         if (findCustomer == null) {
             return ResponseEntity.notFound().build();
         }
-        customer.setCustomerId(id);
-        service.save(customer);
-        return ResponseEntity.ok(customer);
+        CustomerUpdateDTO customerUpdateDTO = new CustomerUpdateDTO(id, customerCreationDTO);
+        Customer updatedCustomer = service.save(customerUpdateDTO.toCustomer());
+        return ResponseEntity.ok(updatedCustomer.toCustomerDTO());
     }
 
     @DeleteMapping("/{id}")
@@ -66,5 +73,10 @@ public class CustomerController {
         return ResponseEntity.ok("Deleted successfully!");
     }
 
+    @GetMapping("/{id}/shopping-carts")
+    public ResponseEntity<List<ShoppingCart>> getCustomerShoppingCart(@PathVariable Integer id) {
+        List<ShoppingCart> shoppingCarts = shoppingCartService.getAllByCustomerId(id);
+        return ResponseEntity.ok(shoppingCarts);
+    }
 
 }
