@@ -1,6 +1,8 @@
 package edu.miu.cs489.wsc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,11 +23,16 @@ public class OrderLine {
     private Double price;
 
     @OneToMany
-    @JoinColumn(name = "product_id")
+    @JoinTable(
+            name = "order_lines",
+            joinColumns = {@JoinColumn(name = "product_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_line_id")}
+    )
     private List<Product> product;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 
 }
